@@ -1,4 +1,3 @@
-// Your script here.
 const msg = new SpeechSynthesisUtterance();
 let voices = [];
 const voicesDropdown = document.querySelector('[name="voice"]');
@@ -26,12 +25,9 @@ function populateVoices() {
     const option = document.createElement("option");
     option.value = voice.name;
     option.textContent = `${voice.name} (${voice.lang})`;
-
-    // Mark default voice
     if (voice.default) {
       option.textContent += " — DEFAULT";
     }
-
     voicesDropdown.appendChild(option);
   });
 }
@@ -40,8 +36,6 @@ function populateVoices() {
 function setVoice() {
   const selectedVoice = voices.find((voice) => voice.name === this.value);
   msg.voice = selectedVoice;
-
-  // If speech is in progress, restart with new voice
   if (speechSynthesis.speaking) {
     toggleSpeak();
     setTimeout(toggleSpeak, 100);
@@ -50,16 +44,11 @@ function setVoice() {
 
 // Toggle speak/stop
 function toggleSpeak() {
-  // Stop any ongoing speech
   speechSynthesis.cancel();
-
-  // If no text, don't start speaking
   if (!textInput.value.trim()) {
     alert("Please enter some text to speak!");
     return;
   }
-
-  // Start speaking
   speechSynthesis.speak(msg);
 }
 
@@ -71,14 +60,11 @@ function stopSpeak() {
 // Update utterance options when sliders change
 function setOption() {
   msg[this.name] = this.value;
-
-  // If speech is in progress and it's rate/pitch change, restart with new settings
   if (
     speechSynthesis.speaking &&
     (this.name === "rate" || this.name === "pitch")
-  ) {
+  )
     toggleSpeak();
-  }
 }
 
 // Update text when textarea changes
